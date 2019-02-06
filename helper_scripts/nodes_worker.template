@@ -1,0 +1,1 @@
+${worker} openshift_hostname=${worker} ${extra}

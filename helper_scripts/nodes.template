@@ -1,0 +1,10 @@
+#3.9
+#${master_hostname} openshift_hostname=${master_hostname}
+#${infra_hostname} openshift_hostname=${infra_hostname} openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
+#${worker_hostname} openshift_hostname=${worker_hostname} openshift_schedulable=true openshift_node_labels="{'region': 'primary', 'zone': 'default'}"
+#3.11
+#${master_hostname} openshift_hostname=${master_hostname} openshift_node_group_name="node-config-master"
+#${infra_hostname} openshift_hostname=${infra_hostname} openshift_node_group_name="node-config-infra"
+#${worker_hostname} openshift_hostname=${worker_hostname} openshift_node_group_name="node-config-compute"
+
+

@@ -1,0 +1,115 @@
+variable "ocp_version" {
+  description = "OCP version"
+  default     = "3.9"
+#  default     = "3.11"
+}
+variable "ansible_version" {
+  description = "Ansible version"
+  default     = "2.4"
+#  default     = "2.6"
+}
+variable "sdn_type" {
+  description = "SDN type"
+  default     = "redhat/openshift-ovs-networkpolicy"
+#  default     = "redhat/openshift-ovs-multitenant"
+#  default     = "redhat/openshift-ovs-subnet"
+}
+variable "rhuser" {
+  description = "RH user"
+  default = ""
+}
+variable "rhpass" {
+  description = "RH pass"
+  default = ""
+}
+variable "rhpool" {
+  description = "RH pool"
+  default = ""
+}
+variable "cloudprovider" {
+  description = "Cloud provider type"
+  default     = "aws"
+}
+variable "instancerole" {
+  description = "Instance role"
+  default     = ""
+}
+variable "keypair" {
+  description = "AWS keypair"
+  default     = ""
+}
+variable "subdomain_prefix" {
+  description = "Subdomain prefix"
+  default     = "apps"
+}
+variable "clustername" {
+  description = "Cluster name"
+  default     = "openshift"
+}
+variable "domain" {
+  description = "Domain"
+  default     = ""
+}
+locals {
+  public_subdomain = "${var.subdomain_prefix}.${var.clustername}.${var.domain}"
+  admin_hostname   = "${var.clustername}.${var.domain}"
+}
+variable "route53_public_zoneid" {
+  description = "Route53 Public Zone ID"
+  default     = ""
+}
+variable "aws_region" {
+  description = "AWS region to launch servers."
+  default     = "us-east-1"
+}
+variable "aws_amis" {
+  default = {
+     us-east-1 = "ami-06fd194eff2ab1451"
+  }
+}
+variable "bastion_count" {
+  description = "Bastion count"
+  default = "1"
+}
+variable "bastion_instance_type" {
+  description = "Bastion instance type"
+  default = "t2.medium"
+}
+variable "master_count" {
+  description = "Master count"
+  default = "3"
+}
+variable "master_instance_type" {
+  description = "Master instance type"
+  default = "t2.xlarge"
+}
+variable "worker_count" {
+  description = "Worker count"
+  default = "3"
+}
+variable "worker_instance_type" {
+  description = "Worker instance type"
+  default = "t2.large"
+}
+variable "infra_count" {
+  description = "Infra count"
+  default = "3"
+}
+variable "infra_instance_type" {
+  description = "Infra instance type"
+  default = "t2.xlarge"
+}
+variable "vpc_cidr" {
+  description = "VPC CIDR range"
+  default = "10.0.0.0/16"
+}
+variable "private_subnets" {
+  type = "list"
+  description = "Private subnets"
+  default = ["10.0.0.0/24","10.0.1.0/24","10.0.2.0/24"]
+}
+variable "public_subnets" {
+  type = "list"
+  description = "public subnets"
+  default = ["10.0.3.0/24","10.0.4.0/24","10.0.5.0/24"]
+}

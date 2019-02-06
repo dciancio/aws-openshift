@@ -1,0 +1,70 @@
+
+[OSEv3:children]
+masters
+etcd
+nodes
+
+[OSEv3:vars]
+ansible_ssh_user=ec2-user
+ansible_become=true
+openshift_deployment_type=openshift-enterprise
+
+openshift_cloudprovider_kind=${cloudprovider}
+openshift_clusterid=${clusterid}
+
+openshift_release=${ocp_version}
+
+openshift_disable_check=docker_image_availability,docker_storage,disk_availability
+
+# use htpasswd authentication
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'${htpasswd}}]
+openshift_master_htpasswd_users={'system': '$apr1$PrUs53Ft$iBF8egdazlAw9uhv.8W4l0', 'developer': '$apr1$w7b7sZ2g$ZrTlJOiPb7WHo5FKvWi.C.'}
+
+# registry auth
+#registry.access.redhat.com still provides anonymous access for the moment but will be deprecated within the next year.
+oreg_url=registry.access.redhat.com/openshift3/ose-$${component}:$${version}
+#use a service account where possible (generated token from https://access.redhat.com/terms-based-registry/)
+#oreg_auth_user=xxxxxxxxxxxxxx
+#oreg_auth_password=xxxxxxxxxxxx
+
+# Install examples
+openshift_install_examples=true
+
+# Metrics
+openshift_metrics_install_metrics=true
+
+# Logging
+openshift_logging_install_logging=true
+
+# SDN
+os_sdn_network_plugin_name='${sdn_type}'
+
+# Configure master API and console ports.
+openshift_master_api_port=443
+openshift_master_console_port=443
+
+# HA cluster
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=internal.${admin_hostname}
+openshift_master_cluster_public_hostname=${admin_hostname}
+
+# Default subdomain to use for exposed routes
+openshift_master_default_subdomain=${public_subdomain}
+
+# Put the router on dedicated infra node
+#openshift_hosted_router_selector='region=infra'
+
+# Put the image registry on dedicated infra node
+#openshift_hosted_registry_selector='region=infra'
+
+# Project pods should be placed on primary nodes
+#osm_default_node_selector='region=primary'
+
+[masters]
+${masters}
+[etcd]
+${masters}
+[nodes]
+${nodes_master}
+${nodes_infra}
+${nodes_worker}
