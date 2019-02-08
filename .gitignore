@@ -1,0 +1,7 @@
+variables.tf
+.terraform/*
+*.tfplan
+*.tfstate
+*.tfstate.backup
+terraform.tfstate.d/*
+inventory/*
