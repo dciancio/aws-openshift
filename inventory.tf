@@ -6,13 +6,13 @@ locals {
   infra_node_labels   = "openshift_node_labels=\"{'region': 'infra', 'zone': 'default'}\""
   compute_node_labels = "openshift_schedulable=true openshift_node_labels=\"{'region': 'primary', 'zone': 'default'}\""
 }
-data "template_file" "aws_config" {
-  count = "${var.cloudprovider == "aws" ? 1 : 0 }"
-  template = "${file("${path.cwd}/helper_scripts/aws_config.template")}"
-  vars {
-    cloudprovider = "${var.cloudprovider}"
-    clusterid = "${var.clustername}"
-  }
+data "template_file" "oreg" {
+  count = "${var.ocp_version == "3.11" ? 1 : 0 }"
+  template = "${file("${path.cwd}/helper_scripts/oreg.template")}"
+}
+data "template_file" "logging" {
+  count = "${var.ocp_version == "3.11" ? 1 : 0 }"
+  template = "${file("${path.cwd}/helper_scripts/logging.template")}"
 }
 data "template_file" "masters" {
   count = "${var.master_count}"
@@ -49,6 +49,8 @@ data "template_file" "inventory" {
   template = "${file("${path.cwd}/helper_scripts/ansible-hosts.template")}"
   vars {
     aws_config = "${join("",data.template_file.aws_config.*.rendered)}"
+    oreg = "${join("",data.template_file.oreg.*.rendered)}"
+    logging = "${join("",data.template_file.logging.*.rendered)}"
     ocp_version = "${var.ocp_version}"
     sdn_type = "${var.sdn_type}"
     public_subdomain = "${local.public_subdomain}"
