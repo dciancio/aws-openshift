@@ -18,7 +18,7 @@ resource "aws_security_group" "sec_bastion" {
     create_before_destroy = true
   }
   tags {
-    Name = "${var.clustername}-bastion-sg"
+    "Name" = "${var.clustername}-bastion-sg"
   }
 }
 resource "aws_security_group" "sec_openshift" {
@@ -40,7 +40,8 @@ resource "aws_security_group" "sec_openshift" {
   lifecycle {
     create_before_destroy = true
   }
-  tags {
-    Name = "${var.clustername}-openshift-sg"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-openshift-sg",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
 }

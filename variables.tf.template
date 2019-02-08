@@ -26,6 +26,10 @@ variable "rhpool" {
   description = "RH pool"
   default = ""
 }
+variable "ec2domain" {
+  description = "EC2 domain"
+  default     = "ec2.internal"
+}
 variable "cloudprovider" {
   description = "Cloud provider type"
   default     = "aws"
@@ -42,13 +46,21 @@ variable "subdomain_prefix" {
   description = "Subdomain prefix"
   default     = "apps"
 }
-variable "clustername" {
-  description = "Cluster name"
-  default     = "openshift"
-}
 variable "domain" {
   description = "Domain"
   default     = ""
+}
+variable "clustertagprefix" {
+  description = "Cluster tag prefix"
+  default     = "kubernetes.io/cluster"
+}
+variable "clustername" {
+  description = "Cluster name"
+  default     = ""
+}
+variable "clustertagvalue" {
+  description = "Cluster tag value"
+  default     = "owned"
 }
 locals {
   public_subdomain = "${var.subdomain_prefix}.${var.clustername}.${var.domain}"

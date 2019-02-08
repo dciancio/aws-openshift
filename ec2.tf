@@ -8,9 +8,14 @@ resource "aws_instance" "bastion" {
   user_data       = "${data.template_file.sysprep-bastion.rendered}"
   iam_instance_profile = "${var.instancerole}"
   associate_public_ip_address = true
-  tags {
-    Name = "${var.clustername}-bastion-${count.index}"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-bastion-${count.index}",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
+  volume_tags = "${map(
+    "Name", "${var.clustername}-bastion-${count.index}",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
   provisioner "file" {
     source      = "${path.cwd}/inventory/ansible-hosts"
     destination = "~/hosts"
@@ -30,9 +35,14 @@ resource "aws_instance" "master" {
   key_name             = "${var.keypair}"
   user_data            = "${data.template_file.sysprep-openshift.rendered}"
   iam_instance_profile = "${var.instancerole}"
-  tags {
-    Name = "${var.clustername}-master-${count.index}"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-master-${count.index}",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
+  volume_tags = "${map(
+    "Name", "${var.clustername}-master-${count.index}",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
   ebs_block_device {
     device_name = "/dev/xvdf"
     volume_type = "gp2"
@@ -49,9 +59,14 @@ resource "aws_instance" "worker" {
   key_name             = "${var.keypair}"
   user_data            = "${data.template_file.sysprep-openshift.rendered}"
   iam_instance_profile = "${var.instancerole}"
-  tags {
-    Name = "${var.clustername}-worker-${count.index}"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-worker-${count.index}",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
+  volume_tags = "${map(
+    "Name", "${var.clustername}-worker-${count.index}",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
   ebs_block_device {
     device_name = "/dev/xvdf"
     volume_type = "gp2"
@@ -68,9 +83,14 @@ resource "aws_instance" "infra" {
   key_name             = "${var.keypair}"
   user_data            = "${data.template_file.sysprep-openshift.rendered}"
   iam_instance_profile = "${var.instancerole}"
-  tags {
-    Name = "${var.clustername}-infra-${count.index}"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-infra-${count.index}",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
+  volume_tags = "${map(
+    "Name", "${var.clustername}-infra-${count.index}",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
   ebs_block_device {
     device_name = "/dev/xvdf"
     volume_type = "gp2"

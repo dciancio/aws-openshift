@@ -12,6 +12,7 @@ data "template_file" "sysprep-bastion" {
     rhpool = "${var.rhpool}"
     ocp_version = "${var.ocp_version}"
     ansible_version = "${var.ansible_version}"
+    ec2domain = "${var.ec2domain}"
   }
 }
 data "template_file" "sysprep-openshift" {
@@ -22,5 +23,6 @@ data "template_file" "sysprep-openshift" {
     rhpool = "${var.rhpool}"
     ocp_version = "${var.ocp_version}"
     ansible_version = "${var.ansible_version}"
+    ec2domain = "${var.ec2domain}"
   }
 }

@@ -5,9 +5,10 @@ resource "aws_lb" "master_lb" {
   subnets            = ["${aws_subnet.public.*.id}"]
   idle_timeout       = 350
   enable_cross_zone_load_balancing  = false
-  tags {
-    Name = "${var.clustername}-master-lb"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-master-lb",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
 }
 resource "aws_lb" "master_lb_int" {
   name               = "${var.clustername}-master-lb-int"
@@ -16,9 +17,10 @@ resource "aws_lb" "master_lb_int" {
   subnets            = ["${aws_subnet.private.*.id}"]
   idle_timeout       = 350
   enable_cross_zone_load_balancing  = false
-  tags {
-    Name = "${var.clustername}-master-lb-int"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-master-lb-int",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
 }
 resource "aws_lb" "infra_lb" {
   name               = "${var.clustername}-infra-lb"
@@ -27,18 +29,20 @@ resource "aws_lb" "infra_lb" {
   subnets            = ["${aws_subnet.public.*.id}"]
   idle_timeout       = 350
   enable_cross_zone_load_balancing  = false
-  tags {
-    Name    = "${var.clustername}-infra-lb"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-infra-lb",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
 }
 resource "aws_lb_target_group" "master_lb_tg" {
   name     = "${var.clustername}-master-lb-tg"
   port     = "443"
   protocol = "TCP"
   vpc_id   = "${aws_vpc.default.id}"
-  tags {
-    Name = "${var.clustername}-master-lb-tg"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-master-lb-tg",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
@@ -56,9 +60,10 @@ resource "aws_lb_target_group" "master_lb_int_tg" {
   protocol = "TCP"
   vpc_id   = "${aws_vpc.default.id}"
   target_type = "ip"
-  tags {
-    Name = "${var.clustername}-master-lb-int-tg"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-master-lb-int-tg",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
@@ -75,9 +80,10 @@ resource "aws_lb_target_group" "infra_lb_tg" {
   port     = "80"
   protocol = "TCP"
   vpc_id   = "${aws_vpc.default.id}"
-  tags {
-    Name = "${var.clustername}-infra-lb-tg"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-infra-lb-tg",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
@@ -94,9 +100,10 @@ resource "aws_lb_target_group" "infra_lb_tg2" {
   port     = "443"
   protocol = "TCP"
   vpc_id   = "${aws_vpc.default.id}"
-  tags {
-    Name = "${var.clustername}-infra-lb-tg2"
-  }
+  tags = "${map(
+    "Name", "${var.clustername}-infra-lb-tg2",
+    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    )}"
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
