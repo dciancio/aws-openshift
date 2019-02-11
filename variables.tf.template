@@ -1,12 +1,12 @@
 variable "ocp_version" {
   description = "OCP version"
-  default     = "3.9"
-#  default     = "3.11"
+#  default     = "3.9"
+  default     = "3.11"
 }
 variable "ansible_version" {
   description = "Ansible version"
-  default     = "2.4"
-#  default     = "2.6"
+#  default     = "2.4"
+  default     = "2.6"
 }
 variable "sdn_type" {
   description = "SDN type"
@@ -14,13 +14,21 @@ variable "sdn_type" {
 #  default     = "redhat/openshift-ovs-multitenant"
 #  default     = "redhat/openshift-ovs-subnet"
 }
+variable "reguser" {
+  description = "RH registry user"
+  default = ""
+}
+variable "regpass" {
+  description = "RH registry password"
+  default = ""
+}
 variable "rhuser" {
   description = "RH user"
   default = ""
 }
 variable "rhpass" {
   description = "RH pass"
-  default = ""
+  default = """""
 }
 variable "rhpool" {
   description = "RH pool"
@@ -28,7 +36,7 @@ variable "rhpool" {
 }
 variable "ec2domain" {
   description = "EC2 domain"
-  default     = "ec2.internal"
+  default     = ""
 }
 variable "cloudprovider" {
   description = "Cloud provider type"
@@ -44,7 +52,7 @@ variable "keypair" {
 }
 variable "subdomain_prefix" {
   description = "Subdomain prefix"
-  default     = "apps"
+  default     = ""
 }
 variable "domain" {
   description = "Domain"

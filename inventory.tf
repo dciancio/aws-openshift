@@ -9,6 +9,10 @@ locals {
 data "template_file" "oreg" {
   count = "${var.ocp_version == "3.11" ? 1 : 0 }"
   template = "${file("${path.cwd}/helper_scripts/oreg.template")}"
+  vars {
+    reguser = "${var.reguser}"
+    regpass = "${var.regpass}"
+  }
 }
 data "template_file" "logging" {
   count = "${var.ocp_version == "3.11" ? 1 : 0 }"

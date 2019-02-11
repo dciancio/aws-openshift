@@ -20,7 +20,7 @@ openshift_master_htpasswd_users={'system': '$apr1$PrUs53Ft$iBF8egdazlAw9uhv.8W4l
 
 # registry auth
 #registry.access.redhat.com still provides anonymous access for the moment but will be deprecated within the next year.
-oreg_url=registry.access.redhat.com/openshift3/ose-$${component}:$${version}
+#oreg_url=registry.access.redhat.com/openshift3/ose-$${component}:$${version}
 #use a service account where possible (generated token from https://access.redhat.com/terms-based-registry/)
 #oreg_auth_user=xxxxxxxxxxxxxx
 #oreg_auth_password=xxxxxxxxxxxx
