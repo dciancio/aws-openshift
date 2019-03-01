@@ -22,16 +22,12 @@ variable "regpass" {
   description = "RH registry password"
   default = ""
 }
-variable "rhuser" {
-  description = "RH user"
+variable "rhak" {
+  description = "RH activation key"
   default = ""
 }
-variable "rhpass" {
-  description = "RH pass"
-  default = """""
-}
-variable "rhpool" {
-  description = "RH pool"
+variable "rhorg" {
+  description = "RH organization"
   default = ""
 }
 variable "ec2domain" {

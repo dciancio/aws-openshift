@@ -9,8 +9,7 @@ sudo rpm -e rh-amazon-rhui-client
 sudo yum clean all
 sudo rm -rf /var/cache/yum
 
-sudo subscription-manager register --username='${rhuser}' --password='${rhpass}' --force
-sudo subscription-manager attach --pool='${rhpool}'
+sudo subscription-manager register --activationkey='${rhak}' --org='${rhorg}' --force
 sudo subscription-manager status
 sudo subscription-manager repos --disable="*"
 sudo subscription-manager repos \

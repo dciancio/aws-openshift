@@ -7,9 +7,8 @@ data "aws_availability_zones" "available" {}
 data "template_file" "sysprep-bastion" {
   template = "${file("./helper_scripts/sysprep-bastion.sh")}"
   vars {
-    rhuser = "${var.rhuser}"
-    rhpass = "${var.rhpass}"
-    rhpool = "${var.rhpool}"
+    rhak = "${var.rhak}"
+    rhorg = "${var.rhorg}"
     ocp_version = "${var.ocp_version}"
     ansible_version = "${var.ansible_version}"
     ec2domain = "${var.ec2domain}"
@@ -18,9 +17,8 @@ data "template_file" "sysprep-bastion" {
 data "template_file" "sysprep-openshift" {
   template = "${file("./helper_scripts/sysprep-openshift.sh")}"
   vars {
-    rhuser = "${var.rhuser}"
-    rhpass = "${var.rhpass}"
-    rhpool = "${var.rhpool}"
+    rhak = "${var.rhak}"
+    rhorg = "${var.rhorg}"
     ocp_version = "${var.ocp_version}"
     ansible_version = "${var.ansible_version}"
     ec2domain = "${var.ec2domain}"
