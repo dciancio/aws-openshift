@@ -1,7 +1,5 @@
 resource "aws_default_security_group" "default" {
-  name        = "${var.clustername}-default-sg"
-  description = "default VPC security group"
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id = "${aws_vpc.default.id}"
   ingress {
     protocol  = -1
     self      = true
