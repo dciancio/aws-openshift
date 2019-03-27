@@ -14,17 +14,14 @@ subscription-manager status
 subscription-manager repos --disable="*"
 subscription-manager repos \
     --enable="rhel-7-server-rpms" \
-    --enable="rhel-7-server-optional-rpms" \
     --enable="rhel-7-server-extras-rpms" \
     --enable="rhel-7-fast-datapath-rpms" \
     --enable="rhel-7-server-ose-${ocp_version}-rpms" \
     --enable="rhel-7-server-ansible-${ansible_version}-rpms"
 
-yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-
 yum update -y
 yum install -y openshift-ansible
-yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct unzip certbot
+yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct unzip
 
 su - ec2-user bash -c "cat >~/ansible.cfg <<EOF
 [defaults]
