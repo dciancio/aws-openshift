@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 exec >/var/log/cloud-init-output.log 2>&1
 
 HN=$(curl http://169.254.169.254/latest/meta-data/hostname)

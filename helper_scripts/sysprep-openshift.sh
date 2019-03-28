@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 exec >/var/log/cloud-init-output.log 2>&1
 
 DEVICE="/dev/$(lsblk | grep -w disk | sort | tail -1 | awk '{print $1}')"
