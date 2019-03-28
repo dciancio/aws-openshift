@@ -66,6 +66,7 @@ data "template_file" "inventory" {
     ocp_version = "${var.ocp_version}"
     sdn_type = "${var.sdn_type}"
     public_subdomain = "${local.public_subdomain}"
+    public_admin_hostname = "${local.public_admin_hostname}"
     admin_hostname = "${local.admin_hostname}"
     masters = "${join("",data.template_file.masters.*.rendered)}"
     nodes_master = "${join("",data.template_file.nodes_master.*.rendered)}"

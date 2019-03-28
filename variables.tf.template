@@ -67,8 +67,9 @@ variable "clustertagvalue" {
   default     = "owned"
 }
 locals {
-  public_subdomain = "${var.subdomain_prefix}.${var.clustername}.${var.domain}"
-  admin_hostname   = "${var.clustername}.${var.domain}"
+  public_subdomain      = "${var.subdomain_prefix}.${var.clustername}.${var.domain}"
+  public_admin_hostname = "master.${var.clustername}.${var.domain}"
+  admin_hostname        = "master-internal.${var.clustername}.${var.domain}"
 }
 variable "route53_public_zoneid" {
   description = "Route53 Public Zone ID"
