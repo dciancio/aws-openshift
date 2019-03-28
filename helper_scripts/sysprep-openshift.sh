@@ -2,6 +2,12 @@
 
 set -e
 
+err_msg() {
+  echo "FAILED - Error on line $(caller)"
+}
+
+trap err_msg ERR
+
 exec >/var/log/cloud-init-output.log 2>&1
 
 DEVICE="/dev/$(lsblk | grep -w disk | sort | tail -1 | awk '{print $1}')"
@@ -41,6 +47,8 @@ CONTAINER_ROOT_LV_MOUNT_PATH=/var/lib/docker
 EOF
 docker-storage-setup
 systemctl restart docker
+
+echo "COMPLETED"
 
 reboot
 

@@ -2,6 +2,12 @@
 
 set -e
 
+err_msg() {
+  echo "FAILED - Error on line $(caller)"
+}
+
+trap err_msg ERR
+
 exec >/var/log/cloud-init-output.log 2>&1
 
 HN=$(curl http://169.254.169.254/latest/meta-data/hostname)
@@ -42,6 +48,8 @@ cd /root
 curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
 unzip awscli-bundle.zip
 ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+echo "COMPLETED"
 
 reboot
 
