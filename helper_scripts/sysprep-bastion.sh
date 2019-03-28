@@ -7,9 +7,7 @@ exec >/var/log/cloud-init-output.log 2>&1
 HN=$(curl http://169.254.169.254/latest/meta-data/hostname)
 hostnamectl set-hostname $${HN}.${ec2domain}
 
-rpm -e rh-amazon-rhui-client
-yum clean all
-rm -rf /var/cache/yum
+rpm -q rh-amazon-rhui-client && rpm -e rh-amazon-rhui-client
 
 subscription-manager register --activationkey='${rhak}' --org='${rhorg}' --force
 subscription-manager status
