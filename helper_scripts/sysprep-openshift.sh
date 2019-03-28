@@ -2,7 +2,7 @@
 
 exec >/var/log/cloud-init-output.log 2>&1
 
-DEVICE="/dev/$(lsblk | grep -w disk | sort | tail -1 | awk '{print $$1}')"
+DEVICE="/dev/$(lsblk | grep -w disk | sort | tail -1 | awk '{print $1}')"
 
 HN=$(curl http://169.254.169.254/latest/meta-data/hostname)
 hostnamectl set-hostname $${HN}.${ec2domain}
