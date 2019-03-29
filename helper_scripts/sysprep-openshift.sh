@@ -17,7 +17,7 @@ hostnamectl set-hostname $${HN}.${ec2domain}
 
 rpm -q rh-amazon-rhui-client && rpm -e rh-amazon-rhui-client
 
-subscription-manager register --activationkey='${rhak}' --org='${rhorg}' --force
+subscription-manager register --activationkey='${rhak}' --org='${rhorg}'
 subscription-manager status
 subscription-manager repos --disable="*"
 subscription-manager repos \
