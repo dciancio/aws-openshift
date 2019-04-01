@@ -1,1 +1,1 @@
-${infra} openshift_hostname=${infra} ${extra}
+${infra} ${extra}

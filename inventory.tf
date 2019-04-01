@@ -4,7 +4,7 @@ locals {
   compute_node_group  = "openshift_node_group_name=\"node-config-compute\""
   master_node_labels  = ""
   infra_node_labels   = "openshift_node_labels=\"{'region': 'infra', 'zone': 'default'}\""
-  compute_node_labels = "openshift_schedulable=true openshift_node_labels=\"{'region': 'primary', 'zone': 'default'}\""
+  compute_node_labels = "openshift_node_labels=\"{'region': 'primary', 'zone': 'default'}\""
 }
 data "template_file" "aws_config" {
   count = "${var.cloudprovider == "aws" ? 1 : 0 }"

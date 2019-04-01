@@ -1,1 +1,1 @@
-${master} openshift_hostname=${master} ${extra}
+${master} ${extra}
