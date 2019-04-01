@@ -130,3 +130,35 @@ variable "public_subnets" {
   description = "Public subnets"
   default = ["10.0.3.0/24","10.0.4.0/24","10.0.5.0/24"]
 }
+variable "cacertexpiry" {
+  description = "CA Certificate expiration (in days)"
+# default     = "1825"
+  default     = "9999"
+}
+variable "certexpiry" {
+  description = "Certificate expiration (in days)"
+# default     = "730"
+  default     = "9999"
+}
+variable "use_customcerts" {
+  description = "Use custom certificates"
+  default = false
+#  default = true
+}
+variable "mastercert" {
+  description = "Custom master certificate"
+  default = {
+    certfile = ""
+    keyfile = ""
+    names = ""
+    cafile = ""
+  }
+}
+variable "routercert" {
+  description = "Custom router certificate"
+  default = {
+    certfile = ""
+    keyfile = ""
+    cafile = ""
+  }
+}

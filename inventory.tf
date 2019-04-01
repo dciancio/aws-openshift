@@ -14,6 +14,19 @@ data "template_file" "aws_config" {
     clusterid = "${var.clustername}"
   }
 }
+data "template_file" "custom_certs" {
+  count = "${var.use_customcerts ? 1 : 0 }"
+  template = "${file("${path.cwd}/helper_scripts/custom_certs.template")}"
+  vars {
+    master_certfile = "${lookup(var.mastercert, "certfile")}"
+    master_keyfile  = "${lookup(var.mastercert, "keyfile")}"
+    master_names    = "${lookup(var.mastercert, "names")}"
+    master_cafile   = "${lookup(var.mastercert, "cafile")}"
+    router_certfile = "${lookup(var.routercert, "certfile")}"
+    router_keyfile  = "${lookup(var.routercert, "keyfile")}"
+    router_cafile   = "${lookup(var.routercert, "cafile")}"
+  }
+}
 data "template_file" "oreg" {
   count = "${var.ocp_version == "3.11" ? 1 : 0 }"
   template = "${file("${path.cwd}/helper_scripts/oreg.template")}"
@@ -73,6 +86,9 @@ data "template_file" "inventory" {
     nodes_infra = "${join("",data.template_file.nodes_infra.*.rendered)}"
     nodes_worker = "${join("",data.template_file.nodes_worker.*.rendered)}"
     htpasswd = "${var.ocp_version == "3.10" || var.ocp_version == "3.11" ? "" : ", 'filename': '/etc/origin/master/htpasswd'"}"
+    cacertexpiry = "${var.cacertexpiry}"
+    certexpiry = "${var.certexpiry}"
+    custom_certs = "${join("",data.template_file.custom_certs.*.rendered)}"
   }
 }
 resource "local_file" "inventory" {

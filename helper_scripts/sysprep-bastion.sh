@@ -27,7 +27,7 @@ subscription-manager repos \
 
 yum update -y
 yum install -y openshift-ansible
-yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct unzip
+yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct unzip socat
 
 su - ec2-user bash -c "cat >~/ansible.cfg <<EOF
 [defaults]
@@ -48,6 +48,8 @@ cd /root
 curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
 unzip awscli-bundle.zip
 ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+su - ec2-user bash -c "curl https://get.acme.sh | sh"
 
 echo "COMPLETED"
 

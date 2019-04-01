@@ -36,7 +36,13 @@ openshift_logging_install_logging=true
 ${logging}
 # SDN
 os_sdn_network_plugin_name='${sdn_type}'
-
+# Certs
+openshift_hosted_registry_cert_expire_days=${certexpiry}
+openshift_ca_cert_expire_days=${cacertexpiry}
+openshift_node_cert_expire_days=${certexpiry}
+openshift_master_cert_expire_days=${certexpiry}
+etcd_ca_default_days=${cacertexpiry}
+${custom_certs}
 # Configure master API and console ports.
 openshift_master_api_port=443
 openshift_master_console_port=443

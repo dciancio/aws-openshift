@@ -1,0 +1,4 @@
+# Custom Certificates
+openshift_master_overwrite_named_certificates=true
+openshift_master_named_certificates=[{"certfile": "${master_certfile}", "keyfile": "${master_keyfile}", "names": ["${master_names}"], "cafile": "${master_cafile}"}]
+openshift_hosted_router_certificate={"certfile": "${router_certfile}", "keyfile": "${router_keyfile}", "cafile": "${router_cafile}"}
