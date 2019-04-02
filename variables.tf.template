@@ -3,11 +3,6 @@ variable "ocp_version" {
 #  default     = "3.9"
   default     = "3.11"
 }
-variable "ansible_version" {
-  description = "Ansible version"
-#  default     = "2.4"
-  default     = "2.6"
-}
 variable "sdn_type" {
   description = "SDN type"
   default     = "redhat/openshift-ovs-networkpolicy"
@@ -161,4 +156,23 @@ variable "routercert" {
     keyfile = ""
     cafile = ""
   }
+}
+variable "install_metrics" {
+  description = "Install metrics"
+#  default = false
+  default = true
+}
+variable "install_logging" {
+  description = "Install logging"
+#  default = false
+  default = true
+}
+variable "use_s3_registry" {
+  description = "Use S3 for registry storage"
+  default = false
+#  default = true
+}
+variable "s3bucketname" {
+  description = "S3 bucket name"
+  default = ""
 }

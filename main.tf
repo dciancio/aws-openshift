@@ -1,3 +1,6 @@
+locals {
+  ansible_version = "${var.ocp_version == "3.11" ? "2.6" : "2.4"}"
+}
 # Specify the provider and access details
 provider "aws" {
   region = "${var.aws_region}"
@@ -10,7 +13,7 @@ data "template_file" "sysprep-bastion" {
     rhak = "${var.rhak}"
     rhorg = "${var.rhorg}"
     ocp_version = "${var.ocp_version}"
-    ansible_version = "${var.ansible_version}"
+    ansible_version = "${local.ansible_version}"
     ec2domain = "${var.ec2domain}"
   }
 }
@@ -20,7 +23,7 @@ data "template_file" "sysprep-openshift" {
     rhak = "${var.rhak}"
     rhorg = "${var.rhorg}"
     ocp_version = "${var.ocp_version}"
-    ansible_version = "${var.ansible_version}"
+    ansible_version = "${local.ansible_version}"
     ec2domain = "${var.ec2domain}"
   }
 }

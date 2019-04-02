@@ -28,14 +28,15 @@ ${oreg}
 # Install examples
 openshift_install_examples=true
 
+# Registry
+${registry}
 # Metrics
-openshift_metrics_install_metrics=true
-
+${metrics}
 # Logging
-openshift_logging_install_logging=true
 ${logging}
 # SDN
 os_sdn_network_plugin_name='${sdn_type}'
+
 # Certs
 openshift_hosted_registry_cert_expire_days=${certexpiry}
 openshift_ca_cert_expire_days=${cacertexpiry}

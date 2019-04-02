@@ -1,0 +1,6 @@
+openshift_metrics_install_metrics=true
+openshift_metrics_cassandra_storage_type=dynamic
+openshift_metrics_cassandra_pvc_size=10Gi
+openshift_metrics_heapster_nodeselector=${nodeselector}
+openshift_metrics_hawkular_nodeselector=${nodeselector}
+openshift_metrics_cassandra_nodeselector=${nodeselector}

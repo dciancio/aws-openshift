@@ -5,6 +5,8 @@ locals {
   master_node_labels  = ""
   infra_node_labels   = "openshift_node_labels=\"{'region': 'infra', 'zone': 'default'}\""
   compute_node_labels = "openshift_node_labels=\"{'region': 'primary', 'zone': 'default'}\""
+  infra_region_nodeselector = "{'region':'infra'}"
+  infra_role_nodeselector   = "{'node-role.kubernetes.io/infra':'true'}"
 }
 data "template_file" "aws_config" {
   count = "${var.cloudprovider == "aws" ? 1 : 0 }"
@@ -28,16 +30,34 @@ data "template_file" "custom_certs" {
   }
 }
 data "template_file" "oreg" {
-  count = "${var.ocp_version == "3.11" ? 1 : 0 }"
+  count = "${var.ocp_version == "3.10" || var.ocp_version == "3.11" ? 1 : 0 }"
   template = "${file("${path.cwd}/helper_scripts/oreg.template")}"
   vars {
     reguser = "${var.reguser}"
     regpass = "${var.regpass}"
   }
 }
+data "template_file" "registry" {
+  count = "${var.use_s3_registry ? 1 : 0 }"
+  template = "${file("${path.cwd}/helper_scripts/registry.template")}"
+  vars {
+    s3bucketname = "${var.s3bucketname}"
+    aws_region = "${var.aws_region}"
+  }
+}
+data "template_file" "metrics" {
+  count = "${var.install_metrics ? 1 : 0 }"
+  template = "${file("${path.cwd}/helper_scripts/metrics.template")}"
+  vars {
+    nodeselector = "${var.ocp_version == "3.10" || var.ocp_version == "3.11" ? local.infra_role_nodeselector : local.infra_region_nodeselector }"
+  }
+}
 data "template_file" "logging" {
-  count = "${var.ocp_version == "3.11" ? 1 : 0 }"
+  count = "${var.install_logging ? 1 : 0 }"
   template = "${file("${path.cwd}/helper_scripts/logging.template")}"
+  vars {
+    nodeselector = "${var.ocp_version == "3.10" || var.ocp_version == "3.11" ? local.infra_role_nodeselector : local.infra_region_nodeselector }"
+  }
 }
 data "template_file" "masters" {
   count = "${var.master_count}"
@@ -89,6 +109,9 @@ data "template_file" "inventory" {
     cacertexpiry = "${var.cacertexpiry}"
     certexpiry = "${var.certexpiry}"
     custom_certs = "${join("",data.template_file.custom_certs.*.rendered)}"
+    metrics = "${join("",data.template_file.metrics.*.rendered)}"
+    logging = "${join("",data.template_file.logging.*.rendered)}"
+    registry = "${join("",data.template_file.registry.*.rendered)}"
   }
 }
 resource "local_file" "inventory" {
