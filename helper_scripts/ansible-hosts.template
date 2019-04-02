@@ -32,6 +32,7 @@ openshift_install_examples=true
 openshift_metrics_install_metrics=true
 
 # Logging
+openshift_logging_install_logging=true
 ${logging}
 # SDN
 os_sdn_network_plugin_name='${sdn_type}'
