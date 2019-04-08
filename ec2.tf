@@ -10,11 +10,11 @@ resource "aws_instance" "bastion" {
   associate_public_ip_address = true
   tags = "${map(
     "Name", "${var.clustername}-bastion-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   volume_tags = "${map(
     "Name", "${var.clustername}-bastion-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   provisioner "file" {
     source      = "${path.cwd}/inventory/ansible-hosts"
@@ -37,11 +37,11 @@ resource "aws_instance" "master" {
   iam_instance_profile = "${var.instancerole}"
   tags = "${map(
     "Name", "${var.clustername}-master-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   volume_tags = "${map(
     "Name", "${var.clustername}-master-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   ebs_block_device {
     device_name = "/dev/xvdf"
@@ -61,11 +61,11 @@ resource "aws_instance" "worker" {
   iam_instance_profile = "${var.instancerole}"
   tags = "${map(
     "Name", "${var.clustername}-worker-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   volume_tags = "${map(
     "Name", "${var.clustername}-worker-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   ebs_block_device {
     device_name = "/dev/xvdf"
@@ -85,11 +85,11 @@ resource "aws_instance" "infra" {
   iam_instance_profile = "${var.instancerole}"
   tags = "${map(
     "Name", "${var.clustername}-infra-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   volume_tags = "${map(
     "Name", "${var.clustername}-infra-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   ebs_block_device {
     device_name = "/dev/xvdf"

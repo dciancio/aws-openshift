@@ -61,6 +61,6 @@ resource "aws_security_group" "sec_openshift" {
   }
   tags = "${map(
     "Name", "${var.clustername}-openshift-sg",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
 }

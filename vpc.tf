@@ -5,14 +5,14 @@ resource "aws_vpc" "default" {
   enable_dns_hostnames = true
   tags = "${map(
     "Name", "${var.clustername}-vpc",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
 }
 resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.default.id}"
   tags = "${map(
     "Name", "${var.clustername}-igw",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
 }
 resource "aws_eip" "eip" {
@@ -20,7 +20,7 @@ resource "aws_eip" "eip" {
   vpc = true
   tags = "${map(
     "Name", "${var.clustername}-eip-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
 }
 resource "aws_nat_gateway" "public" {
@@ -30,7 +30,7 @@ resource "aws_nat_gateway" "public" {
   depends_on = ["aws_internet_gateway.igw","aws_eip.eip"]
   tags = "${map(
     "Name", "${var.clustername}-ngw-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
 }
 resource "aws_subnet" "public" {
@@ -39,7 +39,7 @@ resource "aws_subnet" "public" {
   cidr_block = "${var.public_subnets[count.index]}"
   tags = "${map(
     "Name", "${var.clustername}-public-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
 }
@@ -49,7 +49,7 @@ resource "aws_subnet" "private" {
   cidr_block = "${var.private_subnets[count.index]}"
   tags = "${map(
     "Name", "${var.clustername}-private-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
 }
@@ -58,7 +58,7 @@ resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.default.id}"
   tags = "${map(
     "Name", "${var.clustername}-public-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   depends_on = ["aws_internet_gateway.igw"]
   route {
@@ -71,7 +71,7 @@ resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.default.id}"
   tags = "${map(
     "Name", "${var.clustername}-private-${count.index}",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   depends_on = ["aws_nat_gateway.public"]
   route {

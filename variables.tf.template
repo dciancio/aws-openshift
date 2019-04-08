@@ -49,6 +49,10 @@ variable "domain" {
   description = "Domain"
   default     = ""
 }
+variable "clustertagprefixold" {
+  description = "Cluster tag prefix (for OCP <= 3.6)"
+  default     = "KubernetesCluster"
+}
 variable "clustertagprefix" {
   description = "Cluster tag prefix"
   default     = "kubernetes.io/cluster"
@@ -57,14 +61,17 @@ variable "clustername" {
   description = "Cluster name"
   default     = ""
 }
-variable "clustertagvalue" {
-  description = "Cluster tag value"
+variable "clustertag" {
+  description = "Cluster tag"
   default     = "owned"
 }
 locals {
   public_subdomain      = "${var.subdomain_prefix}.${var.clustername}.${var.domain}"
   public_admin_hostname = "master.${var.clustername}.${var.domain}"
   admin_hostname        = "master-internal.${var.clustername}.${var.domain}"
+  clustertagprefixnew   = "${var.clustertagprefix}${var.clustername}"
+  clustertagkey         = "${var.ocp_version == "3.5" || var.ocp_version == "3.6" ? var.clustertagprefixold : local.clustertagprefixnew}"
+  clustertagvalue       = "${var.ocp_version == "3.5" || var.ocp_version == "3.6" ? var.clustername : var.clustertag}"
 }
 variable "route53_public_zoneid" {
   description = "Route53 Public Zone ID"

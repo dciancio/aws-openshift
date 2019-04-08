@@ -7,7 +7,7 @@ resource "aws_lb" "master_lb" {
   enable_cross_zone_load_balancing  = false
   tags = "${map(
     "Name", "${var.clustername}-master-lb",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
 }
 resource "aws_lb" "master_lb_int" {
@@ -19,7 +19,7 @@ resource "aws_lb" "master_lb_int" {
   enable_cross_zone_load_balancing  = false
   tags = "${map(
     "Name", "${var.clustername}-master-lb-int",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
 }
 resource "aws_lb" "infra_lb" {
@@ -31,7 +31,7 @@ resource "aws_lb" "infra_lb" {
   enable_cross_zone_load_balancing  = false
   tags = "${map(
     "Name", "${var.clustername}-infra-lb",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
 }
 resource "aws_lb_target_group" "master_lb_tg" {
@@ -41,7 +41,7 @@ resource "aws_lb_target_group" "master_lb_tg" {
   vpc_id   = "${aws_vpc.default.id}"
   tags = "${map(
     "Name", "${var.clustername}-master-lb-tg",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   health_check {
     healthy_threshold   = 3
@@ -62,7 +62,7 @@ resource "aws_lb_target_group" "master_lb_int_tg" {
   target_type = "ip"
   tags = "${map(
     "Name", "${var.clustername}-master-lb-int-tg",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   health_check {
     healthy_threshold   = 3
@@ -82,7 +82,7 @@ resource "aws_lb_target_group" "infra_lb_tg" {
   vpc_id   = "${aws_vpc.default.id}"
   tags = "${map(
     "Name", "${var.clustername}-infra-lb-tg",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   health_check {
     healthy_threshold   = 3
@@ -102,7 +102,7 @@ resource "aws_lb_target_group" "infra_lb_tg2" {
   vpc_id   = "${aws_vpc.default.id}"
   tags = "${map(
     "Name", "${var.clustername}-infra-lb-tg2",
-    "${var.clustertagprefix}/${var.clustername}", "${var.clustertagvalue}"
+    "${local.clustertagkey}", "${local.clustertagvalue}"
     )}"
   health_check {
     healthy_threshold   = 3
