@@ -55,7 +55,7 @@ variable "clustertagprefixold" {
 }
 variable "clustertagprefix" {
   description = "Cluster tag prefix"
-  default     = "kubernetes.io/cluster"
+  default     = "kubernetes.io/cluster/"
 }
 variable "clustername" {
   description = "Cluster name"
