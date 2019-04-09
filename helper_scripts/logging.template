@@ -7,3 +7,4 @@ openshift_logging_es_nodeselector=${nodeselector}
 openshift_logging_kibana_nodeselector=${nodeselector}
 openshift_logging_curator_nodeselector=${nodeselector}
 openshift_logging_es_number_of_replicas=1
+${logging_url}

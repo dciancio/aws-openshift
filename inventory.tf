@@ -7,6 +7,7 @@ locals {
   compute_node_labels = "openshift_node_labels=\"{'region': 'primary', 'zone': 'default'}\""
   infra_region_nodeselector = "{'region':'infra'}"
   infra_role_nodeselector   = "{'node-role.kubernetes.io/infra':'true'}"
+  logging_master_public_url = "openshift_logging_master_public_url=https://${local.public_admin_hostname}"
 }
 data "template_file" "aws_config" {
   count = "${var.cloudprovider == "aws" ? 1 : 0 }"
@@ -57,6 +58,7 @@ data "template_file" "logging" {
   template = "${file("${path.cwd}/helper_scripts/logging.template")}"
   vars {
     nodeselector = "${var.ocp_version == "3.10" || var.ocp_version == "3.11" ? local.infra_role_nodeselector : local.infra_region_nodeselector }"
+    logging_url  = "${var.ocp_version == "3.6" ? local.logging_master_public_url : "" }"
   }
 }
 data "template_file" "masters" {
@@ -95,7 +97,6 @@ data "template_file" "inventory" {
   vars {
     aws_config = "${join("",data.template_file.aws_config.*.rendered)}"
     oreg = "${join("",data.template_file.oreg.*.rendered)}"
-    logging = "${join("",data.template_file.logging.*.rendered)}"
     ocp_version = "${var.ocp_version}"
     sdn_type = "${var.sdn_type}"
     public_subdomain = "${local.public_subdomain}"
