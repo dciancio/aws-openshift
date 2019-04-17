@@ -1,1 +1,1 @@
-${infra} ${extra}
+${infra} ${oshost} ${extra}

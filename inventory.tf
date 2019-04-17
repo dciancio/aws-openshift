@@ -73,6 +73,7 @@ data "template_file" "nodes_master" {
   template = "${file("${path.cwd}/helper_scripts/nodes_master.template")}"
   vars {
     master = "${element(aws_instance.master.*.private_dns, count.index)}"
+    oshost = "${var.ocp_version != "3.10" && var.ocp_version != "3.11"? format("%s=%s","openshift_hostname",element(aws_instance.master.*.private_dns, count.index)) : "" }"
     extra = "${var.ocp_version == "3.10" || var.ocp_version == "3.11" ? local.master_node_group : local.master_node_labels }"
   }
 }
@@ -81,6 +82,7 @@ data "template_file" "nodes_infra" {
   template = "${file("${path.cwd}/helper_scripts/nodes_infra.template")}"
   vars {
     infra = "${element(aws_instance.infra.*.private_dns, count.index)}"
+    oshost = "${var.ocp_version != "3.10" && var.ocp_version != "3.11"? format("%s=%s","openshift_hostname",element(aws_instance.infra.*.private_dns, count.index)) : "" }"
     extra = "${var.ocp_version == "3.10" || var.ocp_version == "3.11" ? local.infra_node_group : local.infra_node_labels }"
   }
 }
@@ -89,6 +91,7 @@ data "template_file" "nodes_worker" {
   template = "${file("${path.cwd}/helper_scripts/nodes_worker.template")}"
   vars {
     worker = "${element(aws_instance.worker.*.private_dns, count.index)}"
+    oshost = "${var.ocp_version != "3.10" && var.ocp_version != "3.11"? format("%s=%s","openshift_hostname",element(aws_instance.worker.*.private_dns, count.index)) : "" }"
     extra = "${var.ocp_version == "3.10" || var.ocp_version == "3.11" ? local.compute_node_group : local.compute_node_labels }"
   }
 }
