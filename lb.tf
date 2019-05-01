@@ -46,11 +46,11 @@ resource "aws_lb_target_group" "master_lb_tg" {
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-    timeout             = "10"
-    port                = "443"
-    path                = "/healthz"
-    protocol            = "HTTPS"
+    timeout             = 10
     interval            = 30
+    port                = "443"
+    protocol            = "HTTPS"
+    path                = "/healthz"
     matcher             = "200-399"
   }
 }
@@ -67,11 +67,11 @@ resource "aws_lb_target_group" "master_lb_int_tg" {
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-    timeout             = "10"
-    port                = "443"
-    path                = "/healthz"
-    protocol            = "HTTPS"
+    timeout             = 10
     interval            = 30
+    port                = "443"
+    protocol            = "HTTPS"
+    path                = "/healthz"
     matcher             = "200-399"
   }
 }
@@ -87,12 +87,10 @@ resource "aws_lb_target_group" "infra_lb_tg" {
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-    timeout             = "6"
-    port                = "80"
-    path                = "/"
-    protocol            = "HTTP"
+#    timeout             = 10
     interval            = 30
-    matcher             = "200-399"
+    port                = "80"
+    protocol            = "TCP"
   }
 }
 resource "aws_lb_target_group" "infra_lb_tg2" {
@@ -107,12 +105,10 @@ resource "aws_lb_target_group" "infra_lb_tg2" {
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-    timeout             = "10"
-    port                = "443"
-    path                = "/"
-    protocol            = "HTTPS"
+#    timeout             = 10
     interval            = 30
-    matcher             = "200-399"
+    port                = "443"
+    protocol            = "TCP"
   }
 }
 resource "aws_lb_listener" "master_lb_listener" {
