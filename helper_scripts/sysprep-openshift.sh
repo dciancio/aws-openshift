@@ -30,6 +30,8 @@ subscription-manager repos \
 yum update -y
 yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
 
+sed -i 's/^#compress/compress/g' /etc/logrotate.conf
+
 yum install -y docker NetworkManager
 
 systemctl stop docker

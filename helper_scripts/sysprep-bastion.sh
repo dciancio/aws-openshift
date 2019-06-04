@@ -29,6 +29,8 @@ yum update -y
 yum install -y openshift-ansible
 yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct unzip socat
 
+sed -i 's/^#compress/compress/g' /etc/logrotate.conf
+
 su - ec2-user bash -c "cat >~/ansible.cfg <<EOF
 [defaults]
 log_path = ./ansible.log
