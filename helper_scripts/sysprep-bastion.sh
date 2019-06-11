@@ -4,6 +4,7 @@ set -e
 
 err_msg() {
   echo "FAILED - Error on line $(caller)"
+  touch /root/sysprep_failed.txt
 }
 
 trap err_msg ERR
@@ -53,7 +54,20 @@ unzip awscli-bundle.zip
 
 su - ec2-user bash -c "curl https://get.acme.sh | sh"
 
+# Loop until all nodes syspreps have completed
+echo "WAITING FOR NODE SYSPREP TO COMPLETE..."
+timeout 1h bash -c "until su - ec2-user bash -c \"ansible -i hosts nodes -m shell -a 'cat /root/sysprep_complete.txt' &>/dev/null\"; do echo \"Waiting 60s...\"; sleep 60; done"
+
 echo "COMPLETED"
+
+/bin/cp -pf /etc/rc.d/rc.local /etc/rc.d/rc.local.orig
+cat >>/etc/rc.d/rc.local <<EOF
+touch /root/sysprep_complete.txt
+/bin/mv -f /etc/rc.d/rc.local.orig /etc/rc.d/rc.local
+chmod -x /etc/rc.d/rc.local
+EOF
+
+chmod +x /etc/rc.d/rc.local
 
 reboot
 

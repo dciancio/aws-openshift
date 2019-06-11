@@ -4,6 +4,7 @@ set -e
 
 err_msg() {
   echo "FAILED - Error on line $(caller)"
+  touch /root/sysprep_failed.txt
 }
 
 trap err_msg ERR
@@ -51,6 +52,15 @@ docker-storage-setup
 systemctl restart docker
 
 echo "COMPLETED"
+
+/bin/cp -pf /etc/rc.d/rc.local /etc/rc.d/rc.local.orig
+cat >>/etc/rc.d/rc.local <<EOF
+touch /root/sysprep_complete.txt
+/bin/mv -f /etc/rc.d/rc.local.orig /etc/rc.d/rc.local
+chmod -x /etc/rc.d/rc.local
+EOF
+
+chmod +x /etc/rc.d/rc.local
 
 reboot
 

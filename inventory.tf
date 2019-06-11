@@ -53,6 +53,10 @@ data "template_file" "metrics" {
     nodeselector = "${var.ocp_version == "3.10" || var.ocp_version == "3.11" ? local.infra_role_nodeselector : local.infra_region_nodeselector }"
   }
 }
+data "template_file" "monitoring" {
+  count = "${var.install_monitoring && (var.ocp_version == "3.10" || var.ocp_version == "3.11") ? 1 : 0 }"
+  template = "${file("${path.cwd}/helper_scripts/monitoring.template")}"
+}
 data "template_file" "logging" {
   count = "${var.install_logging ? 1 : 0 }"
   template = "${file("${path.cwd}/helper_scripts/logging.template")}"
@@ -113,9 +117,10 @@ data "template_file" "inventory" {
     cacertexpiry = "${var.cacertexpiry}"
     certexpiry = "${var.certexpiry}"
     custom_certs = "${join("",data.template_file.custom_certs.*.rendered)}"
-    metrics = "${join("",data.template_file.metrics.*.rendered)}"
-    logging = "${join("",data.template_file.logging.*.rendered)}"
     registry = "${join("",data.template_file.registry.*.rendered)}"
+    metrics = "${join("",data.template_file.metrics.*.rendered)}"
+    monitoring = "${join("",data.template_file.monitoring.*.rendered)}"
+    logging = "${join("",data.template_file.logging.*.rendered)}"
   }
 }
 resource "local_file" "inventory" {

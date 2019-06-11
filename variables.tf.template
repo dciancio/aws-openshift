@@ -1,5 +1,6 @@
 variable "ocp_version" {
   description = "OCP version"
+#  default     = "3.6"
 #  default     = "3.9"
   default     = "3.11"
 }
@@ -83,7 +84,7 @@ variable "aws_region" {
 }
 variable "aws_amis" {
   default = {
-     us-east-1 = "ami-06fd194eff2ab1451"
+     us-east-1 = "ami-0240b09539b9692a0"
   }
 }
 variable "bastion_count" {
@@ -166,6 +167,11 @@ variable "routercert" {
 }
 variable "install_metrics" {
   description = "Install metrics"
+#  default = false
+  default = true
+}
+variable "install_monitoring" {
+  description = "Install monitoring"
 #  default = false
   default = true
 }

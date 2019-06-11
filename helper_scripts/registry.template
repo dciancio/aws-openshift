@@ -1,3 +1,4 @@
+# Registry
 openshift_hosted_registry_storage_kind=object
 openshift_hosted_registry_storage_provider=s3
 openshift_hosted_registry_storage_s3_bucket=${s3bucketname}

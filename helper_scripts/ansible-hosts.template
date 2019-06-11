@@ -28,12 +28,14 @@ ${oreg}
 # Install examples
 openshift_install_examples=true
 
-# Registry
 ${registry}
-# Metrics
+
 ${metrics}
-# Logging
+
+${monitoring}
+
 ${logging}
+
 # SDN
 os_sdn_network_plugin_name='${sdn_type}'
 
