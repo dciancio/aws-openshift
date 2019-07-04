@@ -9,7 +9,7 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 data "template_file" "sysprep-bastion" {
   template = "${file("./helper_scripts/sysprep-bastion.sh")}"
-  vars {
+  vars = {
     rhak = "${var.rhak}"
     rhorg = "${var.rhorg}"
     ocp_version = "${var.ocp_version}"
@@ -19,7 +19,7 @@ data "template_file" "sysprep-bastion" {
 }
 data "template_file" "sysprep-openshift" {
   template = "${file("./helper_scripts/sysprep-openshift.sh")}"
-  vars {
+  vars = {
     rhak = "${var.rhak}"
     rhorg = "${var.rhorg}"
     ocp_version = "${var.ocp_version}"

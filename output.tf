@@ -1,9 +1,9 @@
-output "openshift master public hostname" {
+output "openshift_master_public_hostname" {
   value = "${local.public_admin_hostname}"
 }
-output "openshift subdomain" {
+output "openshift_subdomain" {
   value = "${local.public_subdomain}"
 }
-output "bastion hostnames" {
+output "bastion_hostnames" {
   value = ["${aws_instance.bastion.*.public_dns}"]
 }

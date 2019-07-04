@@ -12,8 +12,8 @@ resource "aws_default_security_group" "default" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags {
-    "Name" = "${var.clustername}-default-sg"
+  tags = {
+    Name = "${var.clustername}-default-sg"
   }
 }
 
@@ -36,8 +36,8 @@ resource "aws_security_group" "sec_bastion" {
   lifecycle {
     create_before_destroy = true
   }
-  tags {
-    "Name" = "${var.clustername}-bastion-sg"
+  tags = {
+    Name = "${var.clustername}-bastion-sg"
   }
 }
 resource "aws_security_group" "sec_openshift" {

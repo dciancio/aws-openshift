@@ -20,6 +20,7 @@ resource "aws_instance" "bastion" {
     source      = "${path.cwd}/inventory/ansible-hosts"
     destination = "~/hosts"
     connection {
+       host     = self.public_ip
        type     = "ssh"
        user     = "ec2-user"
     }
