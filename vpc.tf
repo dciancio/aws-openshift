@@ -1,91 +1,108 @@
 # Create a VPC to launch our instances into
 resource "aws_vpc" "default" {
-  cidr_block = "${var.vpc_cidr}"
-  enable_dns_support = true
+  cidr_block           = var.vpc_cidr
+  enable_dns_support   = true
   enable_dns_hostnames = true
-  tags = "${map(
-    "Name", "${var.clustername}-vpc",
-    "${local.clustertagkey}", "${local.clustertagvalue}"
-    )}"
+  tags = {
+    "Name"                   = "${var.clustername}-vpc"
+    "${local.clustertagkey}" = "${local.clustertagvalue}"
+  }
 }
+
 resource "aws_internet_gateway" "igw" {
-  vpc_id = "${aws_vpc.default.id}"
-  tags = "${map(
-    "Name", "${var.clustername}-igw",
-    "${local.clustertagkey}", "${local.clustertagvalue}"
-    )}"
+  vpc_id = aws_vpc.default.id
+  tags = {
+    "Name"              = "${var.clustername}-igw"
+    "${local.clustertagkey}" = "${local.clustertagvalue}"
+  }
 }
+
 resource "aws_eip" "eip" {
-  count = "${length(var.public_subnets)}"
-  vpc = true
-  tags = "${map(
-    "Name", "${var.clustername}-eip-${count.index}",
-    "${local.clustertagkey}", "${local.clustertagvalue}"
-    )}"
+  count = length(var.public_subnets)
+  vpc   = true
+  tags = {
+    "Name"              = "${var.clustername}-eip-${count.index}"
+    "${local.clustertagkey}" = "${local.clustertagvalue}"
+  }
 }
+
 resource "aws_nat_gateway" "public" {
-  count = "${length(var.public_subnets)}"
-  allocation_id = "${element(aws_eip.eip.*.id, count.index)}"
-  subnet_id = "${element(aws_subnet.public.*.id, count.index)}"
-  depends_on = ["aws_internet_gateway.igw","aws_eip.eip"]
-  tags = "${map(
-    "Name", "${var.clustername}-ngw-${count.index}",
-    "${local.clustertagkey}", "${local.clustertagvalue}"
-    )}"
+  count         = length(var.public_subnets)
+  allocation_id = element(aws_eip.eip.*.id, count.index)
+  subnet_id     = element(aws_subnet.public.*.id, count.index)
+  depends_on = [
+    aws_internet_gateway.igw,
+    aws_eip.eip,
+  ]
+  tags = {
+    "Name"              = "${var.clustername}-ngw-${count.index}"
+    "${local.clustertagkey}" = "${local.clustertagvalue}"
+  }
 }
+
 resource "aws_subnet" "public" {
-  count = "${length(var.public_subnets)}"
-  vpc_id = "${aws_vpc.default.id}"
-  cidr_block = "${var.public_subnets[count.index]}"
-  tags = "${map(
-    "Name", "${var.clustername}-public-${count.index}",
-    "${local.clustertagkey}", "${local.clustertagvalue}"
-    )}"
-  availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
+  count      = length(var.public_subnets)
+  vpc_id     = aws_vpc.default.id
+  cidr_block = var.public_subnets[count.index]
+  tags = {
+    "Name"              = "${var.clustername}-public-${count.index}"
+    "${local.clustertagkey}" = "${local.clustertagvalue}"
+  }
+
+  availability_zone = data.aws_availability_zones.available.names[count.index]
 }
+
 resource "aws_subnet" "private" {
-  count = "${length(var.private_subnets)}"
-  vpc_id = "${aws_vpc.default.id}"
-  cidr_block = "${var.private_subnets[count.index]}"
-  tags = "${map(
-    "Name", "${var.clustername}-private-${count.index}",
-    "${local.clustertagkey}", "${local.clustertagvalue}"
-    )}"
-  availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
+  count      = length(var.private_subnets)
+  vpc_id     = aws_vpc.default.id
+  cidr_block = var.private_subnets[count.index]
+  tags = {
+    "Name"              = "${var.clustername}-private-${count.index}"
+    "${local.clustertagkey}" = "${local.clustertagvalue}"
+  }
+
+  availability_zone = data.aws_availability_zones.available.names[count.index]
 }
+
 resource "aws_route_table" "public" {
-  count = "${length(var.public_subnets)}"
-  vpc_id = "${aws_vpc.default.id}"
-  tags = "${map(
-    "Name", "${var.clustername}-public-${count.index}",
-    "${local.clustertagkey}", "${local.clustertagvalue}"
-    )}"
-  depends_on = ["aws_internet_gateway.igw"]
+  count  = length(var.public_subnets)
+  vpc_id = aws_vpc.default.id
+  tags = {
+    "Name"              = "${var.clustername}-public-${count.index}"
+    "${local.clustertagkey}" = "${local.clustertagvalue}"
+  }
+
+  depends_on = [aws_internet_gateway.igw]
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.igw.id}"
+    gateway_id = aws_internet_gateway.igw.id
   }
 }
+
 resource "aws_route_table" "private" {
-  count = "${length(var.private_subnets)}"
-  vpc_id = "${aws_vpc.default.id}"
-  tags = "${map(
-    "Name", "${var.clustername}-private-${count.index}",
-    "${local.clustertagkey}", "${local.clustertagvalue}"
-    )}"
-  depends_on = ["aws_nat_gateway.public"]
+  count  = length(var.private_subnets)
+  vpc_id = aws_vpc.default.id
+  tags = {
+    "Name"              = "${var.clustername}-private-${count.index}"
+    "${local.clustertagkey}" = "${local.clustertagvalue}"
+  }
+
+  depends_on = [aws_nat_gateway.public]
   route {
-    cidr_block = "0.0.0.0/0"
-    nat_gateway_id = "${element(aws_nat_gateway.public.*.id, count.index)}"
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = element(aws_nat_gateway.public.*.id, count.index)
   }
 }
+
 resource "aws_route_table_association" "public" {
-  count = "${length(var.public_subnets)}"
-  subnet_id = "${element(aws_subnet.public.*.id, count.index)}"
-  route_table_id = "${element(aws_route_table.public.*.id, count.index)}"
+  count          = length(var.public_subnets)
+  subnet_id      = element(aws_subnet.public.*.id, count.index)
+  route_table_id = element(aws_route_table.public.*.id, count.index)
 }
+
 resource "aws_route_table_association" "private" {
-  count = "${length(var.private_subnets)}"
-  subnet_id = "${element(aws_subnet.private.*.id, count.index)}"
-  route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
+  count          = length(var.private_subnets)
+  subnet_id      = element(aws_subnet.private.*.id, count.index)
+  route_table_id = element(aws_route_table.private.*.id, count.index)
 }
+
