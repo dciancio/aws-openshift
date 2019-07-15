@@ -66,14 +66,6 @@ variable "clustertag" {
   description = "Cluster tag"
   default     = "owned"
 }
-locals {
-  public_subdomain      = "${var.subdomain_prefix}.${var.clustername}.${var.domain}"
-  public_admin_hostname = "master.${var.clustername}.${var.domain}"
-  admin_hostname        = "master-internal.${var.clustername}.${var.domain}"
-  clustertagprefixnew   = "${var.clustertagprefix}${var.clustername}"
-  clustertagkey         = "${var.ocp_version == "3.5" || var.ocp_version == "3.6" ? var.clustertagprefixold : local.clustertagprefixnew}"
-  clustertagvalue       = "${var.ocp_version == "3.5" || var.ocp_version == "3.6" ? var.clustername : var.clustertag}"
-}
 variable "route53_public_zoneid" {
   description = "Route53 Public Zone ID"
   default     = ""
@@ -185,7 +177,12 @@ variable "use_s3_registry" {
   default = false
 #  default = true
 }
-variable "s3bucketname" {
-  description = "S3 bucket name"
-  default = ""
+locals {
+  public_subdomain      = "${var.subdomain_prefix}.${var.clustername}.${var.domain}"
+  public_admin_hostname = "master.${var.clustername}.${var.domain}"
+  admin_hostname        = "master-internal.${var.clustername}.${var.domain}"
+  clustertagprefixnew   = "${var.clustertagprefix}${var.clustername}"
+  clustertagkey         = "${var.ocp_version == "3.5" || var.ocp_version == "3.6" ? var.clustertagprefixold : local.clustertagprefixnew}"
+  clustertagvalue       = "${var.ocp_version == "3.5" || var.ocp_version == "3.6" ? var.clustername : var.clustertag}"
+  s3bucketname          = "${var.clustername}-registry-storage"
 }

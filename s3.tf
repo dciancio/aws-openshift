@@ -1,9 +1,9 @@
 resource "aws_s3_bucket" "registry" {
   count  = var.use_s3_registry ? 1 : 0
-  bucket = "${var.s3bucketname}"
+  bucket = "${local.s3bucketname}"
   acl    = "private"
   tags = {
-    Name = "${var.s3bucketname}"
+    Name = "${local.s3bucketname}"
   }
 }
 

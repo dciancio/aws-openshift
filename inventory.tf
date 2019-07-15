@@ -46,7 +46,7 @@ data "template_file" "registry" {
   count    = var.use_s3_registry ? 1 : 0
   template = file("${path.cwd}/helper_scripts/registry.template")
   vars = {
-    s3bucketname = var.s3bucketname
+    s3bucketname = local.s3bucketname
     aws_region   = var.aws_region
   }
 }
