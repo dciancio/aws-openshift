@@ -11,14 +11,14 @@ trap err_msg ERR
 
 exec >/var/log/cloud-init-output.log 2>&1
 
-DEVICE="/dev/$(lsblk | grep -w disk | sort | tail -1 | awk '{print $1}')"
+rm -f /root/sysprep_*.txt
 
 HN=$(curl http://169.254.169.254/latest/meta-data/hostname)
 hostnamectl set-hostname $${HN}.${ec2domain}
 
 rpm -q rh-amazon-rhui-client && rpm -e rh-amazon-rhui-client
 
-subscription-manager register --activationkey='${rhak}' --org='${rhorg}'
+subscription-manager status || subscription-manager register --activationkey='${rhak}' --org='${rhorg}'
 subscription-manager status
 subscription-manager repos --disable="*"
 subscription-manager repos \
@@ -34,6 +34,8 @@ yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-
 sed -i 's/^#compress/compress/g' /etc/logrotate.conf
 
 yum install -y docker NetworkManager
+
+DEVICE="/dev/$(lsblk | grep -w disk | sort | tail -1 | awk '{print $1}')"
 
 systemctl stop docker
 systemctl enable docker

@@ -11,12 +11,14 @@ trap err_msg ERR
 
 exec >/var/log/cloud-init-output.log 2>&1
 
+rm -f /root/sysprep_*.txt
+
 HN=$(curl http://169.254.169.254/latest/meta-data/hostname)
 hostnamectl set-hostname $${HN}.${ec2domain}
 
 rpm -q rh-amazon-rhui-client && rpm -e rh-amazon-rhui-client
 
-subscription-manager register --activationkey='${rhak}' --org='${rhorg}'
+subscription-manager status || subscription-manager register --activationkey='${rhak}' --org='${rhorg}'
 subscription-manager status
 subscription-manager repos --disable="*"
 subscription-manager repos \
@@ -45,9 +47,13 @@ ssh_args = -C -o ControlMaster=auto -o ControlPersist=900s -o GSSAPIAuthenticati
 pipelining = True
 EOF"
 
-su - ec2-user bash -c "ln -s /usr/share/ansible/openshift-ansible"
+su - ec2-user bash -c "[ -h ~/openshift-ansible ] || ln -s /usr/share/ansible/openshift-ansible"
 
 cd /root
+rm -rf /usr/local/aws
+rm -f /usr/local/bin/aws
+rm -rf awscli-bundle
+rm -f awscli-bundle.zip
 curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
 unzip awscli-bundle.zip
 ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
