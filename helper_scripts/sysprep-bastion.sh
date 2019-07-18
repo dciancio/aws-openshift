@@ -18,6 +18,7 @@ hostnamectl set-hostname $${HN}.${ec2domain}
 
 rpm -q rh-amazon-rhui-client && rpm -e rh-amazon-rhui-client
 
+grep server_timeout /etc/rhsm/rhsm.conf || subscription-manager config --server.server_timeout=360
 subscription-manager status || subscription-manager register --activationkey='${rhak}' --org='${rhorg}'
 subscription-manager status
 subscription-manager repos --disable="*"
