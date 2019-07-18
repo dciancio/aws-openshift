@@ -52,8 +52,8 @@ openshift_master_console_port=443
 
 # HA cluster
 openshift_master_cluster_method=native
-openshift_master_cluster_hostname=${admin_hostname}
-openshift_master_cluster_public_hostname=${public_admin_hostname}
+openshift_master_cluster_hostname=${api_hostname}
+openshift_master_cluster_public_hostname=${public_api_hostname}
 
 # Default subdomain to use for exposed routes
 openshift_master_default_subdomain=${public_subdomain}

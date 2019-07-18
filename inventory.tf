@@ -7,7 +7,7 @@ locals {
   compute_node_labels       = "openshift_node_labels=\"{'region': 'primary', 'zone': 'default'}\""
   infra_region_nodeselector = "{'region':'infra'}"
   infra_role_nodeselector   = "{'node-role.kubernetes.io/infra':'true'}"
-  logging_master_public_url = "openshift_logging_master_public_url=https://${local.public_admin_hostname}"
+  logging_master_public_url = "openshift_logging_master_public_url=https://${local.public_api_hostname}"
 }
 
 data "template_file" "aws_config" {
@@ -131,8 +131,8 @@ data "template_file" "inventory" {
     ocp_version           = var.ocp_version
     sdn_type              = var.sdn_type
     public_subdomain      = local.public_subdomain
-    public_admin_hostname = local.public_admin_hostname
-    admin_hostname        = local.admin_hostname
+    public_api_hostname   = local.public_api_hostname
+    api_hostname          = local.api_hostname
     masters               = join("", data.template_file.masters.*.rendered)
     nodes_master          = join("", data.template_file.nodes_master.*.rendered)
     nodes_infra           = join("", data.template_file.nodes_infra.*.rendered)

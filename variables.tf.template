@@ -1,14 +1,14 @@
 variable "ocp_version" {
   description = "OCP version"
-#  default     = "3.6"
-#  default     = "3.9"
+  #default     = "3.6"
+  #default     = "3.9"
   default     = "3.11"
 }
 variable "sdn_type" {
   description = "SDN type"
   default     = "redhat/openshift-ovs-networkpolicy"
-#  default     = "redhat/openshift-ovs-multitenant"
-#  default     = "redhat/openshift-ovs-subnet"
+  #default     = "redhat/openshift-ovs-multitenant"
+  #default     = "redhat/openshift-ovs-subnet"
 }
 variable "reguser" {
   description = "RH registry user"
@@ -65,10 +65,6 @@ variable "clustername" {
 variable "clustertag" {
   description = "Cluster tag"
   default     = "owned"
-}
-variable "route53_public_zoneid" {
-  description = "Route53 Public Zone ID"
-  default     = ""
 }
 variable "aws_region" {
   description = "AWS region to launch servers."
@@ -127,18 +123,18 @@ variable "public_subnets" {
 }
 variable "cacertexpiry" {
   description = "CA Certificate expiration (in days)"
-# default     = "1825"
+  #default     = "1825"
   default     = "9999"
 }
 variable "certexpiry" {
   description = "Certificate expiration (in days)"
-# default     = "730"
+  #default     = "730"
   default     = "9999"
 }
 variable "use_customcerts" {
   description = "Use custom certificates"
   default = false
-#  default = true
+  #default = true
 }
 variable "mastercert" {
   description = "Custom master certificate"
@@ -159,30 +155,32 @@ variable "routercert" {
 }
 variable "install_metrics" {
   description = "Install metrics"
-#  default = false
+  #default = false
   default = true
 }
 variable "install_monitoring" {
   description = "Install monitoring"
-#  default = false
+  #default = false
   default = true
 }
 variable "install_logging" {
   description = "Install logging"
-#  default = false
+  #default = false
   default = true
 }
 variable "use_s3_registry" {
   description = "Use S3 for registry storage"
   default = false
-#  default = true
+  #default = true
 }
 locals {
-  public_subdomain      = "${var.subdomain_prefix}.${var.clustername}.${var.domain}"
-  public_admin_hostname = "master.${var.clustername}.${var.domain}"
-  admin_hostname        = "master-internal.${var.clustername}.${var.domain}"
+  cluster_domain        = "${var.clustername}.${var.domain}"
+  public_subdomain      = "${var.subdomain_prefix}.${local.cluster_domain}"
+  public_api_hostname   = "api.${local.cluster_domain}"
+  api_hostname          = "api-int.${local.cluster_domain}"
   clustertagprefixnew   = "${var.clustertagprefix}${var.clustername}"
   clustertagkey         = "${var.ocp_version == "3.5" || var.ocp_version == "3.6" ? var.clustertagprefixold : local.clustertagprefixnew}"
   clustertagvalue       = "${var.ocp_version == "3.5" || var.ocp_version == "3.6" ? var.clustername : var.clustertag}"
   s3bucketname          = "${var.clustername}-registry-storage"
 }
+

@@ -1,5 +1,5 @@
-output "openshift_master_public_hostname" {
-  value = local.public_admin_hostname
+output "openshift_public_api_hostname" {
+  value = local.public_api_hostname
 }
 
 output "openshift_subdomain" {

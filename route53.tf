@@ -1,6 +1,10 @@
+data "aws_route53_zone" "public" {
+  name = var.domain
+}
+
 resource "aws_route53_record" "dns_master" {
-  zone_id = var.route53_public_zoneid
-  name    = local.public_admin_hostname
+  zone_id = data.aws_route53_zone.public.zone_id
+  name    = local.public_api_hostname
   type    = "A"
   alias {
     name                   = aws_lb.master_lb.dns_name
@@ -10,8 +14,8 @@ resource "aws_route53_record" "dns_master" {
 }
 
 resource "aws_route53_record" "dns_master_int" {
-  zone_id = var.route53_public_zoneid
-  name    = local.admin_hostname
+  zone_id = data.aws_route53_zone.public.zone_id
+  name    = local.api_hostname
   type    = "A"
   alias {
     name                   = aws_lb.master_lb_int.dns_name
@@ -21,7 +25,7 @@ resource "aws_route53_record" "dns_master_int" {
 }
 
 resource "aws_route53_record" "dns_subdomain" {
-  zone_id = var.route53_public_zoneid
+  zone_id = data.aws_route53_zone.public.zone_id
   name    = "*.${local.public_subdomain}"
   type    = "A"
   alias {
