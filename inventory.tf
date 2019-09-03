@@ -8,6 +8,7 @@ locals {
   infra_region_nodeselector = "{'region':'infra'}"
   infra_role_nodeselector   = "{'node-role.kubernetes.io/infra':'true'}"
   logging_master_public_url = "openshift_logging_master_public_url=https://${local.public_api_hostname}"
+  openshift_pkg_version     = "openshift_pkg_version=-${var.ocp_pkg_version}"
 }
 
 data "template_file" "aws_config" {
@@ -129,6 +130,7 @@ data "template_file" "inventory" {
     aws_config            = join("", data.template_file.aws_config.*.rendered)
     oreg                  = join("", data.template_file.oreg.*.rendered)
     ocp_version           = var.ocp_version
+    openshift_pkg_version = var.ocp_pkg_version == "latest" ? "" : local.openshift_pkg_version
     sdn_type              = var.sdn_type
     public_subdomain      = local.public_subdomain
     public_api_hostname   = local.public_api_hostname

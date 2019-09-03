@@ -11,6 +11,7 @@ openshift_deployment_type=openshift-enterprise
 
 ${aws_config}
 openshift_release=${ocp_version}
+${openshift_pkg_version}
 
 openshift_disable_check=docker_image_availability,docker_storage,disk_availability
 
