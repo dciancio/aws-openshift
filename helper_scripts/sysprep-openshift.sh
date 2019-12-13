@@ -14,7 +14,7 @@ exec >/var/log/cloud-init-output.log 2>&1
 rm -f /root/sysprep_*.txt
 
 HN=$(curl http://169.254.169.254/latest/meta-data/hostname)
-hostnamectl set-hostname $${HN}.${ec2domain}
+hostnamectl set-hostname $${HN}${ec2domain}
 
 rpm -q rh-amazon-rhui-client && rpm -e rh-amazon-rhui-client
 

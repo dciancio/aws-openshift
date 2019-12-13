@@ -31,10 +31,6 @@ variable "rhorg" {
   description = "RH organization"
   default = ""
 }
-variable "ec2domain" {
-  description = "EC2 domain"
-  default     = ""
-}
 variable "cloudprovider" {
   description = "Cloud provider type"
   default     = "aws"
