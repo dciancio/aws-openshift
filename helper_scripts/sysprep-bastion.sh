@@ -13,6 +13,8 @@ exec >/var/log/cloud-init-output.log 2>&1
 
 rm -f /root/sysprep_*.txt
 
+sleep 10
+
 HN=$(curl http://169.254.169.254/latest/meta-data/hostname)
 hostnamectl set-hostname $${HN}${ec2domain}
 
