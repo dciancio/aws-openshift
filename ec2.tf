@@ -28,6 +28,8 @@ resource "aws_instance" "bastion" {
     }
   }
   depends_on = [local_file.inventory]
+
+  lifecycle { ignore_changes = [ user_data, security_groups, ebs_block_device, tags, volume_tags, instance_type ] }
 }
 
 resource "aws_instance" "master" {
@@ -55,6 +57,8 @@ resource "aws_instance" "master" {
     volume_size           = 100
     delete_on_termination = true
   }
+
+  lifecycle { ignore_changes = [ user_data, security_groups, ebs_block_device, tags, volume_tags, instance_type ] }
 }
 
 resource "aws_instance" "worker" {
@@ -82,6 +86,8 @@ resource "aws_instance" "worker" {
     volume_size           = 100
     delete_on_termination = true
   }
+
+  lifecycle { ignore_changes = [ user_data, security_groups, ebs_block_device, tags, volume_tags, instance_type ] }
 }
 
 resource "aws_instance" "infra" {
@@ -109,5 +115,7 @@ resource "aws_instance" "infra" {
     volume_size           = 100
     delete_on_termination = true
   }
+
+  lifecycle { ignore_changes = [ user_data, security_groups, ebs_block_device, tags, volume_tags, instance_type ] }
 }
 

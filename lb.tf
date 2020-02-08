@@ -6,7 +6,7 @@ resource "aws_lb" "master_lb" {
   idle_timeout                     = 350
   enable_cross_zone_load_balancing = false
   tags = {
-    "Name"              = "${var.clustername}-master-lb"
+    "Name" = "${var.clustername}-master-lb"
     "${local.clustertagkey}" = "${local.clustertagvalue}"
   }
 }
@@ -19,7 +19,7 @@ resource "aws_lb" "master_lb_int" {
   idle_timeout                     = 350
   enable_cross_zone_load_balancing = false
   tags = {
-    "Name"              = "${var.clustername}-master-lb-int"
+    "Name" = "${var.clustername}-master-lb-int"
     "${local.clustertagkey}" = "${local.clustertagvalue}"
   }
 }
@@ -32,7 +32,7 @@ resource "aws_lb" "infra_lb" {
   idle_timeout                     = 350
   enable_cross_zone_load_balancing = false
   tags = {
-    "Name"              = "${var.clustername}-infra-lb"
+    "Name" = "${var.clustername}-infra-lb"
     "${local.clustertagkey}" = "${local.clustertagvalue}"
   }
 }
@@ -43,7 +43,7 @@ resource "aws_lb_target_group" "master_lb_tg" {
   protocol = "TCP"
   vpc_id   = aws_vpc.default.id
   tags = {
-    "Name"              = "${var.clustername}-master-lb-tg"
+    "Name" = "${var.clustername}-master-lb-tg"
     "${local.clustertagkey}" = "${local.clustertagvalue}"
   }
 
@@ -66,7 +66,7 @@ resource "aws_lb_target_group" "master_lb_int_tg" {
   vpc_id      = aws_vpc.default.id
   target_type = "ip"
   tags = {
-    "Name"              = "${var.clustername}-master-lb-int-tg"
+    "Name" = "${var.clustername}-master-lb-int-tg"
     "${local.clustertagkey}" = "${local.clustertagvalue}"
   }
 
@@ -88,18 +88,19 @@ resource "aws_lb_target_group" "infra_lb_tg" {
   protocol = "TCP"
   vpc_id   = aws_vpc.default.id
   tags = {
-    "Name"              = "${var.clustername}-infra-lb-tg"
+    "Name" = "${var.clustername}-infra-lb-tg"
     "${local.clustertagkey}" = "${local.clustertagvalue}"
   }
 
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-
-    #    timeout             = 10
-    interval = 30
-    port     = "80"
-    protocol = "TCP"
+    timeout             = 6
+    interval            = 30
+    port                = "80"
+    protocol            = "HTTP"
+    path                = "/"
+    matcher             = "200-399"
   }
 }
 
@@ -109,18 +110,19 @@ resource "aws_lb_target_group" "infra_lb_tg2" {
   protocol = "TCP"
   vpc_id   = aws_vpc.default.id
   tags = {
-    "Name"              = "${var.clustername}-infra-lb-tg2"
+    "Name" = "${var.clustername}-infra-lb-tg2"
     "${local.clustertagkey}" = "${local.clustertagvalue}"
   }
 
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-
-    #    timeout             = 10
-    interval = 30
-    port     = "443"
-    protocol = "TCP"
+    timeout             = 10
+    interval            = 30
+    port                = "443"
+    protocol            = "HTTPS"
+    path                = "/"
+    matcher             = "200-399"
   }
 }
 

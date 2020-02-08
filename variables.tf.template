@@ -45,7 +45,11 @@ variable "keypair" {
 }
 variable "subdomain_prefix" {
   description = "Subdomain prefix"
-  default     = ""
+  default     = "apps"
+}
+variable "api_prefix" {
+  description = "API prefix"
+  default     = "api"
 }
 variable "domain" {
   description = "Domain"
@@ -177,8 +181,8 @@ variable "use_s3_registry" {
 locals {
   cluster_domain        = "${var.clustername}.${var.domain}"
   public_subdomain      = "${var.subdomain_prefix}.${local.cluster_domain}"
-  public_api_hostname   = "api.${local.cluster_domain}"
-  api_hostname          = "api-int.${local.cluster_domain}"
+  public_api_hostname   = "${var.api_prefix}.${local.cluster_domain}"
+  api_hostname          = "${var.api_prefix}-int.${local.cluster_domain}"
   clustertagprefixnew   = "${var.clustertagprefix}${var.clustername}"
   clustertagkey         = "${var.ocp_version == "3.5" || var.ocp_version == "3.6" ? var.clustertagprefixold : local.clustertagprefixnew}"
   clustertagvalue       = "${var.ocp_version == "3.5" || var.ocp_version == "3.6" ? var.clustername : var.clustertag}"
